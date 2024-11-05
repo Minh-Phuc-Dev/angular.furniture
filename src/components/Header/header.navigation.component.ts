@@ -1,6 +1,7 @@
 import {NgIf} from '@angular/common';
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
+import {SharedStateService} from 'services/authenticate.service';
 
 @Component({
     selector: 'app-navigation',
@@ -12,19 +13,30 @@ import {Router, RouterLink} from '@angular/router';
     templateUrl: "header.navigation.component.html"
 })
 export class NavigationComponent {
-    isLoggedIn : boolean
+    protected isLoggedIn: boolean = false
 
-    constructor(private router: Router) {
-        this.isLoggedIn = false
+
+    constructor(private router: Router, private sharedStateService: SharedStateService) {
+        this.sharedStateService.getLoginStatus().subscribe(
+            login => this.isLoggedIn = login
+        )
     }
-
 
 
     handleLogout(): void {
+        this.sharedStateService.setLoginStatus(false)
     }
 
+
     isActive(url: string): boolean {
-        return this.router.isActive(url, true);
+        return this.router.isActive(url,
+            {
+                paths: 'exact',
+                queryParams: 'exact',
+                fragment: 'ignored',
+                matrixParams: 'ignored'
+            }
+        );
     }
 
 }

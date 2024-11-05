@@ -10,10 +10,69 @@
         </form>
     </div>
     <div class="flex space-x-4">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+        <div *ngIf="isLoggedIn" class="relative group">
+            <button
+                type="button"
+                class="relative"
+            >
+            <span
+                *ngIf="cart.length > 0"
+                class="absolute text-px-12 bg-red-500 text-white min-w-4 min-h-4 inline-flex items-center justify-center rounded-full bottom-full right-0 translate-y-1/2 translate-x-1/2"
+            >
+                {{cart.length}}
+            </span>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                    />
+                </svg>
+            </button>
+
+            <div class="absolute z-20 -right-20 w-80 bg-white rounded border shadow hidden group-hover:block">
+                <h2 class="px-5 py-2 text-gray-500 text-sm">Product cart</h2>
+                <hr>
+                <div
+                    *ngIf="cart.length <= 0"
+                    class="p-5 space-y-2"
+                >
+                    <img class="w-32 block mx-auto" alt="No items" src="/images/cart-empty.png">
+                    <p class="text-sm text-center text-gray-500">No items</p>
+                </div>
+                <ul
+                    *ngIf="cart.length > 0"
+                    class="p-5"
+                >
+                    <li *ngFor="let item of cart" class="flex gap-x-5 justify-between">
+                        <img class="block w-12 h-12" [src]="item.attributes.image[0]" [alt]="item.name">
+                        <div class="grow flex flex-col h-full space-y-2">
+                            <p>{{item.name}}</p>
+                            <p class="flex justify-between space-x-0.5">
+                                <span class="text-xs font-medium text-primary">{{item.price}}$</span>
+                                <span class="text-xs font-medium text-gray-500">Quantity: ({{item.quantity}})</span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <svg
+            *ngIf="isLoggedIn"
+            class="size-6"
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
         </svg>
     </div>
 </div>
