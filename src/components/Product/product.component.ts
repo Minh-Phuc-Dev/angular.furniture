@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {Product} from 'data';
-import {SharedStateService} from 'services/authenticate.service';
+import {SharedStateService} from 'services/shared.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';

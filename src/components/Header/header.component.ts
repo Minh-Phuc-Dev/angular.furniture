@@ -4,7 +4,7 @@ import {Router, RouterLink} from '@angular/router';
 import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {NavigationComponent} from 'components/Header/header.navigation.component';
 import {ProductCart} from 'data';
-import {SharedStateService} from 'services/authenticate.service';
+import {SharedStateService} from 'services/shared.service';
 
 @Component({
     selector: 'app-header',

@@ -60,6 +60,9 @@
                         </div>
                     </li>
                 </ul>
+                <hr *ngIf="cart.length > 0"/>
+                <a *ngIf="cart.length > 0" routerLink="/cart" class="block text-center text-primary hover:text-indigo-500 py-1" >Go to cart</a>
+
             </div>
         </div>
 

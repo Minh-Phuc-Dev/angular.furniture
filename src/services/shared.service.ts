@@ -8,8 +8,18 @@ import {BehaviorSubject} from 'rxjs';
 
 export class SharedStateService {
     private loginStatus = new BehaviorSubject<boolean>(localStorage.getItem('isLoggedIn') === 'true');
-    private cart = new BehaviorSubject<ProductCart[]>([])
+    private cart = new BehaviorSubject<ProductCart[]>(this.getInitialCart())
 
+    private getInitialCart(): ProductCart[] {
+        const storedCart = localStorage.getItem('cart');
+        return storedCart ? JSON.parse(storedCart) : [];
+    }
+
+    constructor() {
+        this.cart.subscribe(cart => {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        });
+    }
 
     getLoginStatus() {
         return this.loginStatus.asObservable();
@@ -81,5 +91,9 @@ export class SharedStateService {
         );
 
         this.cart.next(cart);
+    }
+
+    clearCart() {
+        this.cart.next([]);
     }
 }

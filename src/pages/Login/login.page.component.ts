@@ -2,7 +2,7 @@ import {NgIf} from '@angular/common';
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {SharedStateService} from 'services/authenticate.service';
+import {SharedStateService} from 'services/shared.service';
 
 @Component(
     {

@@ -1,5 +1,7 @@
 import {Routes} from '@angular/router';
 import {MainLayoutComponent} from 'layouts/main.layout.component';
+import {CartPage} from 'pages/Cart/cart.page.component';
+import {CompletePayment} from 'pages/CompletePayment/complete.payment.page.component';
 import {HomePage} from 'pages/Home/home.page.component';
 import {LoginPage} from 'pages/Login/login.page.component';
 import {RegisterPage} from 'pages/Register/register.page.component';
@@ -18,9 +20,17 @@ export const routes: Routes = [
                 component: RegisterPage
             },
             {
+                path: "cart",
+                component: CartPage
+            },
+            {
+                path: "complete-payment",
+                component: CompletePayment
+            },
+            {
                 path: '',
                 component: HomePage
-            }
+            },
         ]
     }
 ];

@@ -1,0 +1,79 @@
+<div class="max-w-1200 mx-auto py-32">
+    <div
+        *ngIf="cart.length <= 0"
+        class="p-5 space-y-2"
+    >
+        <img class="w-60 block mx-auto" alt="No items" src="/images/cart-empty.png">
+        <p class="text-center text-gray-500 py-2">No item in your cart</p>
+        <a routerLink="/" class="block w-fit mx-auto px-5 py-1 bg-primary rounded text-white">Go to Shop</a>
+    </div>
+
+    <div
+        class="flex space-x-5"
+        *ngIf="cart.length > 0"
+    >
+        <ul
+            class="grow space-y-5"
+        >
+            <li class="flex gap-x-5 py-2 bg-gray-500 text-white px-5 rounded">
+                <h2 class="grow">Product</h2>
+                <h2 class="w-20">Price</h2>
+                <h2 class="w-40">Quantity</h2>
+                <h2 class="w-40">Total</h2>
+            </li>
+            <li *ngFor="let item of cart" class="p-2 border rounded overflow-hidden flex items-center gap-x-5 justify-between">
+                <img class="block w-20 h-20 rounded" [src]="item.attributes.image[0]" [alt]="item.name">
+                <div class="grow">
+                    <p>{{item.name}}</p>
+                    <p>#{{item.id}}</p>
+                </div>
+                <p class="w-20">
+                    <span class="font-medium text-primary">{{item.price}}$ </span>
+                    <span class="text-xs font-medium opacity-50 underline"> {{item.price}}$</span>
+                </p>
+
+                <div class="w-40 flex gap-x-2">
+                    <button
+                        class="px-2 bg-green-500 rounded text-white"
+                        (click)="addToCart(item.id)"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                        </svg>
+                    </button>
+                    <p class="w-10 text-center font-medium text-gray-500">{{item.quantity}}</p>
+                    <button
+                        class="px-2 bg-red-500 rounded text-white"
+                        (click)="removeFromCart(item.id)"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path fill-rule="evenodd" d="M4 10a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H4.75A.75.75 0 0 1 4 10Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="w-40 font-medium text-gray-500">{{item.quantity * item.price}}</p>
+
+            </li>
+        </ul>
+        <div class="w-80 h-fit border rounded overflow-hidden">
+            <h2 class="text-white text-lg font-medium px-5 py-2 bg-primary">Order Summary</h2>
+
+            <ul class="px-5 py-2 space-y-3">
+                <li *ngFor="let item of cart" class="flex gap-x-5 items-center">
+                    <div class="grow truncate">
+                        <p class="font-medium">{{item.name}}</p>
+                        <p class="text-xs">{{item.price}}$ x {{item.quantity}}</p>
+                    </div>
+                    <p class="font-medium text-gray-500">{{item.quantity * item.price}}$</p>
+                </li>
+            </ul>
+            <hr/>
+            <button
+                (click)="generateUrl()"
+                class="block w-full text-center bg-primary text-white py-2"
+            >
+                Checkout: {{getTotalPrice()}}$
+            </button>
+        </div>
+    </div>
+</div>
