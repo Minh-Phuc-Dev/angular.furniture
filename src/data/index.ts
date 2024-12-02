@@ -33,7 +33,7 @@ export const CATEGORIES : Category[] = [
     {
         id: 6,
         name: "Outdoor",
-        image: "/images/category/outdoor.jpg"
+        image: "/images/category/outdoor.jpg",
     }
 ]
 
@@ -63,17 +63,17 @@ export type ProductCart = Product & {
 export const PRODUCTS : Product[] = [
     {
         id: 1,
-        name: "Sofa",
-        price: 100,
-        oldPrice: 120,
+        name: "Sofa MoHo 101",
+        price: 110,
+        oldPrice: 130,
         quantity: 10,
         status: "New",
-        sku: "SOF-001",
+        sku: "MHCBCDD01.BL4",
         categoryId: 1,
         description: "Sofa description",
         attributes: {
             image: [
-                "/images/products/0f35c4be-e682-46b2-a816-2d019295db2d.jpg"
+                "/images/products/sofa1.jpg"
             ]
         },
         meta: {},
@@ -83,7 +83,7 @@ export const PRODUCTS : Product[] = [
     },
     {
         id: 2,
-        name: "Sofa bend",
+        name: "Sofa MoHo 102",
         price: 100,
         oldPrice: 120,
         quantity: 10,
@@ -93,7 +93,7 @@ export const PRODUCTS : Product[] = [
         description: "Sofa description",
         attributes: {
             image: [
-                "/images/products/0f35c4be-e682-46b2-a816-2d019295db2d.jpg"
+                "/images/products/sofa2.jpg"
             ]
         },
         meta: {},
@@ -103,7 +103,7 @@ export const PRODUCTS : Product[] = [
     },
     {
         id: 3,
-        name: "Sofa style",
+        name: "Sofa MoHo 103",
         price: 100,
         oldPrice: 120,
         quantity: 10,
@@ -113,7 +113,7 @@ export const PRODUCTS : Product[] = [
         description: "Sofa description",
         attributes: {
             image: [
-                "/images/products/0f35c4be-e682-46b2-a816-2d019295db2d.jpg"
+                "/images/products/sofa3.jpg"
             ]
         },
         meta: {},
@@ -123,9 +123,9 @@ export const PRODUCTS : Product[] = [
     },
     {
         id: 4,
-        name: "Sofa luxury",
-        price: 100,
-        oldPrice: 120,
+        name: "Sofa MoHo 104",
+        price: 120,
+        oldPrice: 199,
         quantity: 10,
         status: "New",
         sku: "SOF-001",
@@ -133,7 +133,7 @@ export const PRODUCTS : Product[] = [
         description: "Sofa description",
         attributes: {
             image: [
-                "/images/products/0f35c4be-e682-46b2-a816-2d019295db2d.jpg"
+                "/images/products/sofa4.jpg"
             ]
         },
         meta: {},
@@ -143,9 +143,9 @@ export const PRODUCTS : Product[] = [
     },
     {
         id: 5,
-        name: "Sofa luxury",
-        price: 100,
-        oldPrice: 120,
+        name: "Bedroom MoHo 105",
+        price: 139,
+        oldPrice: 150,
         quantity: 10,
         status: "New",
         sku: "SOF-001",
@@ -153,7 +153,227 @@ export const PRODUCTS : Product[] = [
         description: "Sofa description",
         attributes: {
             image: [
-                "/images/products/0f35c4be-e682-46b2-a816-2d019295db2d.jpg"
+                "/images/products/bedroom1.jpg"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 6,
+        name: "Bedroom MoHo 106",
+        price: 149,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/bedroom2.webp"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 7,
+        name: "Bedroom MoHo 107",
+        price: 139,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/bedroom3.jpg"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 8,
+        name: "Bedroom MoHo 108",
+        price: 149,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/bedroom4.jpg"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 9,
+        name: "Dining VLINE 601",
+        price: 149,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/dining1.webp"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 9,
+        name: "Dining VLINE 602",
+        price: 149,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/dining2.webp"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 10,
+        name: "Mattress Royal 188",
+        price: 120,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/mattres1.png"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 11,
+        name: "Mattress Diamond 142",
+        price: 120,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/matres2.webp"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 11,
+        name: "Office VLINE 601",
+        price: 120,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/office1.webp"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 11,
+        name: "Office VLINE 601",
+        price: 120,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/office2.jpg"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 13,
+        name: "Outdoor BG-11N 603",
+        price: 120,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/out.jpg"
+            ]
+        },
+        meta: {},
+        updatedAt: "",
+        createdAt: "",
+        rating: 0
+    },
+    {
+        id: 13,
+        name: "Outdoor BC-CNR 683",
+        price: 120,
+        oldPrice: 150,
+        quantity: 10,
+        status: "New",
+        sku: "SOF-001",
+        categoryId: 1,
+        description: "Sofa description",
+        attributes: {
+            image: [
+                "/images/products/out2.jpg"
             ]
         },
         meta: {},

@@ -1,17 +1,14 @@
 import {NgForOf, NgIf} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {BannerComponent} from 'components/Banner/banner.component';
-import {CategoriesComponent} from 'components/Categories/categories.component';
 import {ProductComponent} from 'components/Product/product.component';
-import {TopNewsComponent} from 'components/TopNews/top.news.component';
 import {Product, PRODUCTS} from 'data';
 
 
 @Component({
     selector: 'search-page',
     standalone: true,
-    imports: [BannerComponent, CategoriesComponent, TopNewsComponent, NgIf, RouterLink, ProductComponent, NgForOf],
+    imports: [NgIf, RouterLink, ProductComponent, NgForOf],
     templateUrl: 'search.page.component.html',
 })
 export class SearchPage implements OnInit{
