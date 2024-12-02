@@ -1,0 +1,14 @@
+<div class="max-w-1200 mx-auto py-32">
+
+    <div *ngIf="products.length > 0" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">
+        <product *ngFor="let product of products" [item]="product"></product>
+    </div>
+
+    <div
+        *ngIf="products.length <= 0"
+        class="p-5 space-y-2"
+    >
+        <p class="text-center text-gray-500 py-2">No item found</p>
+        <a routerLink="/search" class="block w-fit mx-auto px-5 py-1 bg-indigo-500 rounded text-white">Go to Shop</a>
+    </div>
+</div>

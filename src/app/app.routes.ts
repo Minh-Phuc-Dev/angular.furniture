@@ -5,6 +5,7 @@ import {CompletePayment} from 'pages/CompletePayment/complete.payment.page.compo
 import {HomePage} from 'pages/Home/home.page.component';
 import {LoginPage} from 'pages/Login/login.page.component';
 import {RegisterPage} from 'pages/Register/register.page.component';
+import {SearchPage} from 'pages/Search/search.page.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,10 @@ export const routes: Routes = [
             {
                 path: "complete-payment",
                 component: CompletePayment
+            },
+            {
+                path: "search",
+                component: SearchPage
             },
             {
                 path: '',
