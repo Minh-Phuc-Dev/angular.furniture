@@ -1,3 +1,39 @@
+export type Account = {
+    email: string
+    password: string
+    displayName: string
+}
+
+const getAccounts = (): Account[] => {
+    const json = localStorage.getItem("accounts")
+
+    const accounts = json?.startsWith("[") && json.endsWith("]") ? JSON.parse(json) : [
+        {
+            email: "admin@gmail.com",
+            password: "123456789",
+        }
+    ]
+    return accounts as Account[]
+}
+
+export const getAccount = (payload: Omit<Account, "displayName">) => {
+    const accounts = getAccounts()
+
+    return accounts.find((account: Account) => account.email === payload.email && account.password === payload.password)
+}
+
+export const addAccount = (account: Account) => {
+
+    if(getAccounts().find((a: Account) => a.email === account.email)){
+        throw new Error("Account already exists")
+    }
+    localStorage.setItem(
+        "accounts",
+        JSON.stringify([...getAccounts(), account])
+    )
+}
+
+
 export type Category = {
     id: number,
     name: string,

@@ -2,6 +2,7 @@ import {NgIf} from '@angular/common';
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {getAccount} from 'data';
 import {SharedStateService} from 'services/shared.service';
 
 @Component(
@@ -45,10 +46,11 @@ export class LoginPage {
             password: this.form.get('password')!.value
         };
 
-        if(formValues.username === 'admin@gmail.com' && formValues.password === 'admin'){
+        if(getAccount({email: formValues.username, password: formValues.password})){
             this.sharedStateService.setLoginStatus(true)
             await this.router.navigate(['/']);
             return
         }
+        alert("Login failed. Try again.")
     }
 }
