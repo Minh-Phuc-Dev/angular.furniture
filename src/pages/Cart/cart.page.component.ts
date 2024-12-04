@@ -1,5 +1,6 @@
 import {NgForOf, NgIf} from '@angular/common';
 import {Component} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {BannerComponent} from 'components/Banner/banner.component';
 import {CategoriesComponent} from 'components/Categories/categories.component';
@@ -12,11 +13,21 @@ import CryptoJS from 'crypto-js';
 @Component({
     selector: 'cart-page',
     standalone: true,
-    imports: [BannerComponent, CategoriesComponent, TopNewsComponent, NgIf, RouterLink, NgForOf],
+    imports: [BannerComponent, CategoriesComponent, TopNewsComponent, NgIf, RouterLink, NgForOf, ReactiveFormsModule],
     templateUrl: 'cart.page.component.html',
 })
 
 export class CartPage {
+
+    form: FormGroup<{
+        address: FormControl<string | null>,
+        phone: FormControl<string | null>,
+    }> = new FormGroup(
+        {
+            address: new FormControl("", [Validators.required]),
+            phone: new FormControl("", [Validators.required]),
+        }
+    )
 
     private VNPAY_URL : string ="https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
     private VNPAY_CODE: string ="Y1N9M9TY"
