@@ -15,6 +15,54 @@
                 type="button"
                 class="relative"
             >
+                <span
+                    *ngIf="order.length > 0"
+                    class="absolute text-px-12 bg-red-500 text-white min-w-4 min-h-4 inline-flex items-center justify-center rounded-full bottom-full right-0 translate-y-1/2 translate-x-1/2"
+                >
+                    {{order.length}}
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>
+            </button>
+
+            <div class="absolute z-20 -right-20 w-80 bg-white rounded border shadow hidden group-hover:block">
+                <h2 class="px-5 py-2 text-gray-500 text-sm">Order</h2>
+                <hr>
+                <div
+                    *ngIf="order.length <= 0"
+                    class="p-5 space-y-2"
+                >
+                    <img class="w-32 block mx-auto" alt="No items" src="/images/cart-empty.png">
+                    <p class="text-sm text-center text-gray-500">No orders</p>
+                </div>
+                <ul
+                    *ngIf="order.length > 0"
+                    class="p-5 space-y-5"
+                >
+                    <li *ngFor="let item of order" class="flex items-start gap-x-5 justify-between">
+                        <div class="grow flex flex-col h-full overflow-hidden">
+                            <p class="text-gray-700 truncate">{{item.address}}</p>
+                            <p class="text-gray-700 truncate">{{item.phone}}</p>
+                        </div>
+
+                        <div class="w-max flex-none flex flex-col h-full space-y-1">
+                            <p class="text-xs font-medium bg-green-500 text-white rounded w-fit px-1" *ngIf="item.method === 'COD'">COD</p>
+                            <p class="text-xs font-medium bg-blue-500 text-white rounded w-fit px-1" *ngIf="item.method === 'VNPAY'">VNPAY</p>
+                            <p class="text-primary font-medium">{{item.total}}$</p>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div *ngIf="isLoggedIn" class="relative group">
+            <button
+                type="button"
+                class="relative"
+            >
             <span
                 *ngIf="cart.length > 0"
                 class="absolute text-px-12 bg-red-500 text-white min-w-4 min-h-4 inline-flex items-center justify-center rounded-full bottom-full right-0 translate-y-1/2 translate-x-1/2"
@@ -47,7 +95,7 @@
                 </div>
                 <ul
                     *ngIf="cart.length > 0"
-                    class="p-5"
+                    class="p-5 space-y-5"
                 >
                     <li *ngFor="let item of cart" class="flex gap-x-5 justify-between">
                         <img class="block w-12 h-12" [src]="item.attributes.image[0]" [alt]="item.name">
@@ -62,7 +110,6 @@
                 </ul>
                 <hr *ngIf="cart.length > 0"/>
                 <a *ngIf="cart.length > 0" routerLink="/cart" class="block text-center text-primary hover:text-indigo-500 py-1" >Go to cart</a>
-
             </div>
         </div>
 

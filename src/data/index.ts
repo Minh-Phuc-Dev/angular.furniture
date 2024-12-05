@@ -418,3 +418,12 @@ export const PRODUCTS : Product[] = [
         rating: 0
     }
 ]
+
+export type Order = {
+    id: string
+    address: string
+    phone: string
+    method: "COD" | "VNPAY"
+    total: number
+    items: ProductCart[]
+}

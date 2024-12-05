@@ -1,7 +1,7 @@
 import {NgForOf, NgIf} from '@angular/common';
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {BannerComponent} from 'components/Banner/banner.component';
 import {CategoriesComponent} from 'components/Categories/categories.component';
 import {TopNewsComponent} from 'components/TopNews/top.news.component';
@@ -22,10 +22,12 @@ export class CartPage {
     form: FormGroup<{
         address: FormControl<string | null>,
         phone: FormControl<string | null>,
+        method: FormControl<string | null>
     }> = new FormGroup(
         {
             address: new FormControl("", [Validators.required]),
             phone: new FormControl("", [Validators.required]),
+            method: new FormControl("COD", [Validators.required]),
         }
     )
 
@@ -35,7 +37,7 @@ export class CartPage {
     private VNPAY_CALLBACK_URL: string = `${window.location.origin}/complete-payment`
     protected cart: ProductCart[] = []
 
-    constructor(private sharedStateService: SharedStateService) {
+    constructor(private sharedStateService: SharedStateService, private router: Router) {
         this.sharedStateService.getCart().subscribe(
             cart => this.cart = cart
         )
@@ -63,11 +65,41 @@ export class CartPage {
         return `${year}${month}${day}${hours}${minutes}${seconds}`;
     }
 
+    async submitForm(): Promise<void> {
+        const orderId = uuidv4().toString()
+        localStorage.setItem(
+            "order",
+            JSON.stringify(
+                {
+                    id: orderId,
+                    address: this.form.value.address,
+                    phone: this.form.value.phone,
+                    method: this.form.value.method,
+                    items: this.cart,
+                    total: this.getTotalPrice()
+                }
+            )
+        )
+        await this.router.navigate(["/complete-payment"])
+    }
+
     generateUrl(): void {
         const ip = "127.0.0.1";
         const USD_TO_VND_RATE = 24874;
         const orderId = uuidv4().toString()
-        localStorage.setItem("orderId", orderId)
+        localStorage.setItem(
+            "order",
+            JSON.stringify(
+                {
+                    id: orderId,
+                    address: this.form.value.address,
+                    phone: this.form.value.phone,
+                    method: this.form.value.method,
+                    items: this.cart,
+                    total: this.getTotalPrice()
+                }
+            )
+        )
 
         const params: Record<string, string | number> = {
             vnp_Command: "pay",

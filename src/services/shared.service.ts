@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ProductCart, PRODUCTS} from 'data';
+import {Order, ProductCart, PRODUCTS} from 'data';
 import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
@@ -9,16 +9,26 @@ import {BehaviorSubject} from 'rxjs';
 export class SharedStateService {
     private loginStatus = new BehaviorSubject<boolean>(localStorage.getItem('isLoggedIn') === 'true');
     private cart = new BehaviorSubject<ProductCart[]>(this.getInitialCart())
+    private order = new BehaviorSubject<Order[]>(this.getInitialOrder())
+
 
     private getInitialCart(): ProductCart[] {
         const storedCart = localStorage.getItem('cart');
         return storedCart ? JSON.parse(storedCart) : [];
     }
 
+    private getInitialOrder(): Order[] {
+        const storedOrder = localStorage.getItem('orders');
+        return storedOrder ? JSON.parse(storedOrder) : [];
+    }
+
     constructor() {
         this.cart.subscribe(cart => {
             localStorage.setItem('cart', JSON.stringify(cart));
         });
+        this.order.subscribe(orders => {
+            localStorage.setItem('orders', JSON.stringify(orders));
+        })
     }
 
     getLoginStatus() {
@@ -95,5 +105,19 @@ export class SharedStateService {
 
     clearCart() {
         this.cart.next([]);
+    }
+
+    getOrder() {
+        return this.order.asObservable();
+    }
+
+    addOrder(order: Order) {
+        const orders = [...this.order.value]
+        orders.push(order)
+        this.order.next(orders)
+    }
+
+    clearOrder() {
+        this.order.next([])
     }
 }
