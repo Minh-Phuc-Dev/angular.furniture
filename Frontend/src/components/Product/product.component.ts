@@ -1,12 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {ToastComponent} from 'components/Toast/toast.component';
-import {Product} from 'data';
-import {SharedStateService} from 'services/authenticate.service';
+import {SharedStateService} from 'services/shared.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { Product } from 'types/Product';
+import { getImageUrl } from 'helpers';
 
 @Component({
     selector: 'product',
@@ -15,13 +15,12 @@ import { RippleModule } from 'primeng/ripple';
         RouterLink,
         ToastModule,
         ButtonModule,
-        RippleModule,
-        ToastComponent
+        RippleModule
     ],
     templateUrl: 'product.component.html',
     providers: [
-        MessageService
-    ]
+        MessageService,
+    ],
 })
 
 export class ProductComponent {
@@ -39,4 +38,7 @@ export class ProductComponent {
         )
 
     }
+
+    protected readonly event = event;
+    getImageUrl = getImageUrl
 }

@@ -1,8 +1,10 @@
-import {NgIf} from '@angular/common';
-import {Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
-import interceptor, {requestApiHelper} from 'apis/Interceptor';
+import { NgIf } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import interceptor from 'apis/Interceptor';
+import { requestApiHelper } from 'helpers';
+import { SharedStateService } from 'services/shared.service';
 
 @Component(
     {
@@ -17,12 +19,12 @@ import interceptor, {requestApiHelper} from 'apis/Interceptor';
     }
 )
 export class RegisterPage {
-     form: FormGroup<{
+    form: FormGroup<{
         displayName: FormControl<string | null>,
         email: FormControl<string | null>,
         password: FormControl<string | null>,
         confirmPassword: FormControl<string | null>,
-     }> = new FormGroup(
+    }> = new FormGroup(
         {
             displayName: new FormControl("", [Validators.required]),
             email: new FormControl("", [Validators.email, Validators.required]),
@@ -34,16 +36,16 @@ export class RegisterPage {
                 ]
             )
         }, {
-            validators: this.matchPasswordValidator as ValidatorFn
-         }
+        validators: this.matchPasswordValidator as ValidatorFn
+    }
     )
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private sharedStateService: SharedStateService) {
     }
 
 
-    matchPasswordValidator(control: FormControl):ValidationErrors | null {
-        return control.get('password')?.value === control.get('confirmPassword')?.value ? null : {passwordMismatch: true};
+    matchPasswordValidator(control: FormControl): ValidationErrors | null {
+        return control.get('password')?.value === control.get('confirmPassword')?.value ? null : { passwordMismatch: true };
     }
 
     async onSubmit(): Promise<void> {
@@ -56,23 +58,25 @@ export class RegisterPage {
             return
         }
 
-        const {email, displayName, password} = this.form.value
-
-        const {code} = await  requestApiHelper(
+        const { success, payload } = await requestApiHelper(
             interceptor.post(
                 "register",
                 {
-                    email,
-                    displayName,
-                    password
+                    email: this.form.get('email')!.value as string,
+                    displayName: this.form.get('displayName')!.value as string,
+                    password: this.form.get('password')!.value as string
                 }
             )
         )
 
-        if(code !== 200) {
-            await this.router.navigate(["/login"])
+        if (success) {
+            localStorage.setItem('user', JSON.stringify(payload));
+            localStorage.setItem('isLoggedIn', 'true');
+            this.sharedStateService.setLoginStatus(true);
+            await this.router.navigate(["/"]);
             return
         }
+
         alert("Registration failed. Try again.")
     }
 }

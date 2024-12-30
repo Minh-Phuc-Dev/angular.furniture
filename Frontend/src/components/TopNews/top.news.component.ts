@@ -1,7 +1,10 @@
 import {NgForOf} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import interceptor from 'apis/Interceptor';
 import {ProductComponent} from 'components/Product/product.component';
-import {PRODUCTS} from 'data';
+import { requestApiHelper } from 'helpers';
+import { Product } from 'types/Product';
+
 
 @Component({
     selector: 'home-top-news',
@@ -9,7 +12,16 @@ import {PRODUCTS} from 'data';
     imports: [ProductComponent, NgForOf],
     templateUrl: 'top.news.component.html'
 })
-export class TopNewsComponent {
-    protected products = PRODUCTS.slice(0, 4)
+export class TopNewsComponent implements OnInit{
+    protected products : Product[] = []
     constructor() { }
+     
+    async ngOnInit(): Promise<void> {
+        const {success, payload} = await requestApiHelper<Product[]>(
+            interceptor.get('/products')
+        )
+        if(success){
+            this.products = payload!.slice(0, 8)
+        }
+    }
 }

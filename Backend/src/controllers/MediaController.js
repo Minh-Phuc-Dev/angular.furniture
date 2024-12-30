@@ -1,10 +1,10 @@
 const multer = require("multer")
-const {isEmpty} = require("lodash/lang");
-const {JsonResult} = require("@helpers/JsonResult");
-const {HTTP_CODE} = require("@helpers/HttpStatus");
-const {randomUUID} = require("crypto")
-const {JoiValidator} = require("@src/validations/JoiValidator");
-const {SlugSchema} = require("@src/validations/Slug/Slug");
+const { isEmpty } = require("lodash/lang");
+const { JsonResult } = require("@helpers/JsonResult");
+const { HTTP_CODE } = require("@helpers/HttpStatus");
+const { randomUUID } = require("crypto")
+const { JoiValidator } = require("@src/validations/JoiValidator");
+const { SlugSchema } = require("@src/validations/Slug/Slug");
 const path = require("path")
 const fs = require("fs");
 const ExceptionBuilder = require("@exceptions/ExceptionBuilder");
@@ -14,7 +14,7 @@ class MediaController {
         {
             storage: multer.diskStorage(
                 {
-                    destination: process.env.IMAGE_STORAGE,
+                    destination: process.cwd().concat("/public"),
                     filename: (request, file, callback) => {
                         const fileName = randomUUID().toString().concat(file.originalname.substring(file.originalname.lastIndexOf(".")))
                         callback(null, fileName)
@@ -40,16 +40,16 @@ class MediaController {
      */
     static handleUpload(request, response, next) {
         if (isEmpty(request.files)) {
-             next(
-                 JsonResult(
-                     HTTP_CODE.NO_CONTENT,
-                     HTTP_CODE.NO_CONTENT,
-                     null,
-                     "No files were uploaded"
-                 )
-             )
+            next(
+                JsonResult.builder(
+                    HTTP_CODE.NO_CONTENT,
+                    HTTP_CODE.NO_CONTENT,
+                    null,
+                    "No files were uploaded"
+                )
+            )
         }
-        const {files} = request
+        const { files } = request
 
         JsonResult.builder(
             HTTP_CODE.CREATED,
@@ -66,11 +66,12 @@ class MediaController {
      */
 
     static getMedia(request, response, next) {
-        const {slug} = JoiValidator.validate(request.params, SlugSchema)
+        const { slug } = JoiValidator.validate(request.params, SlugSchema)
         const attachmentPath = path.join(
-            process.env.IMAGE_STORAGE,
+            process.cwd().concat("/public"),
             slug
         )
+        
 
         if (!fs.existsSync(attachmentPath)) {
             throw ExceptionBuilder.builder(

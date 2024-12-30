@@ -1,11 +1,11 @@
 import {NgIf} from '@angular/common';
 import {Component} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
-import interceptor, {requestApiHelper} from 'apis/Interceptor';
-import {ToastComponent} from 'components/Toast/toast.component';
-import {MessageService} from 'primeng/api';
-import {SharedStateService} from 'services/authenticate.service';
+import {Router} from '@angular/router';
+import interceptor from 'apis/Interceptor';
+import {getAccount} from 'data';
+import { requestApiHelper } from 'helpers';
+import {SharedStateService} from 'services/shared.service';
 
 @Component(
     {
@@ -15,12 +15,7 @@ import {SharedStateService} from 'services/authenticate.service';
         imports: [
             FormsModule,
             ReactiveFormsModule,
-            NgIf,
-            RouterLink,
-            ToastComponent
-        ],
-        providers: [
-            MessageService
+            NgIf
         ]
     }
 )
@@ -34,7 +29,7 @@ export class LoginPage {
     )
 
 
-    constructor(private sharedStateService: SharedStateService, private router: Router, private messageService: MessageService) {
+    constructor(private sharedStateService: SharedStateService, private router: Router) {
 
     }
 
@@ -53,22 +48,20 @@ export class LoginPage {
             password: this.form.get('password')!.value
         };
 
-        const {code} = await requestApiHelper(
+        const {success, payload} = await requestApiHelper(
             interceptor.post(
-                "login",
+                '/login',
                 formValues
             )
         )
 
-        if(code === 200){
+        if(success){
             this.sharedStateService.setLoginStatus(true)
-
-            await this.router.navigate(['/'])
+            localStorage.setItem('user', JSON.stringify(payload));
+            localStorage.setItem('isLoggedIn', 'true');
+            await this.router.navigate(['/']);
             return
         }
-
-        alert(
-            "Login failed"
-        )
+        alert("Login failed. Try again.")
     }
 }

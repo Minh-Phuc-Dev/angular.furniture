@@ -3,8 +3,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {NavigationComponent} from 'components/Header/header.navigation.component';
-import {ProductCart} from 'data';
-import {SharedStateService} from 'services/authenticate.service';
+import {Order, ProductCart} from 'data';
+import {SharedStateService} from 'services/shared.service';
 
 @Component({
     selector: 'app-header',
@@ -22,14 +22,21 @@ import {SharedStateService} from 'services/authenticate.service';
 export class HeaderComponent implements OnInit {
     protected isLoggedIn: boolean = false
     protected cart: ProductCart[]= []
-
+    protected order: Order[] = []
 
     constructor(private router: Router, private sharedStateService: SharedStateService) {
         this.sharedStateService.getLoginStatus().subscribe(
             login => this.isLoggedIn = login
         )
         this.sharedStateService.getCart().subscribe(
-            cart => this.cart = cart
+            cart => {
+                this.cart = cart
+            }
+        )
+        this.sharedStateService.getOrder().subscribe(
+            order => {
+                this.order = order
+            }
         )
     }
     searchForm: FormGroup = new FormGroup(

@@ -1,20 +1,33 @@
 import {NgForOf} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
-import {CATEGORIES, Category} from 'data';
+import interceptor from 'apis/Interceptor';
+
+import { getImageUrl, requestApiHelper } from 'helpers';
+import { Category } from 'types/Category';
 
 @Component({
     selector: 'home-categories',
     standalone: true,
     imports: [
         NgForOf,
-        RouterLink
+        RouterLink,
     ],
     templateUrl: 'categories.component.html'
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
     protected categories: Category[]
     constructor() {
-        this.categories = CATEGORIES
+        this.categories = []
     }
+    async ngOnInit(): Promise<void> {
+        const {success, payload}  = await requestApiHelper<Category[]>(
+            interceptor.get('/categories')
+        )
+
+        if(success){
+            this.categories = payload!
+        }
+    }
+    getImageUrl = getImageUrl
 }
