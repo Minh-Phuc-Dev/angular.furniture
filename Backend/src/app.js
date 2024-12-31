@@ -21,11 +21,27 @@ app.use("/api", require("@routers/index"))
 
 
 app.use(
-    "/public", 
+    "/public",
     express.static("public")
 )
 
-app.use(express.static("dist"))
+
+app.use(express.static("dist", {fallthrough:  false}))
+
+app.use(
+    (error, request, response, next) => {
+        if(error.status === 404){
+            response.status(200).sendFile([process.cwd(), "dist", "index.html"].join("/")   )
+            return
+        }
+        response.status(error.status).send(error.message)
+    }
+)
+
+
+
+
+
 
 
 require("@databases/ModelSynchronized")
