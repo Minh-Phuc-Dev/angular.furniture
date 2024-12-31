@@ -79,7 +79,7 @@ class OrderService {
             return  JsonResult.builder(
                 HTTP_CODE.OK,
                 HTTP_CODE.CONTINUE,
-                await VNPayService.generateUrl(totalAmount),
+                await VNPayService.generateUrl(totalAmount, dto.callbackUrl),
                 "Add item successfully."
             )
         }

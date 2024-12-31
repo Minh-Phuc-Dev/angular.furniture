@@ -22,6 +22,10 @@ export type Order<I = Record<string, any>> = {
     createdAt: string;
     attributes: {
         streetAddress: string
+        phoneNumber: string
     }
     items: OrderItem<I>[]
+    meta: {
+        paymentMethod: string
+    }
 }

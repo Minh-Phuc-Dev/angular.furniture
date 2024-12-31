@@ -6,7 +6,7 @@ const Joi = require("joi");
  * @property {number} quantity - Product quantity
  */
 
-/**@type {import("joi").Schema<ProductDTO>}}*/
+/**@type {import("joi").Schema<ProductCartDTO>}}*/
 const ProductCartSchema = Joi.object(
     {
         productId: Joi.number().required(),

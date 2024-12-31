@@ -40,10 +40,11 @@ class VNPayService {
      * @async
      * @static
      * @param {number} amount
+     * @param {string} callbackUrl
      * @returns {Promise<VNPayTransaction>}
      *
      */
-    static async generateUrl(amount) {
+    static async generateUrl(amount, callbackUrl) {
         const ip = "127.0.0.1";
 
         const VNPAY_URL = process.env.VNPAY_URL
@@ -59,7 +60,7 @@ class VNPayService {
             'vnp_Locale': "vn",
             'vnp_OrderInfo': "Purchase",
             'vnp_OrderType': "other",
-            'vnp_ReturnUrl': process.env.VNPAY_CALLBACK_URL,
+            'vnp_ReturnUrl': callbackUrl,
             'vnp_TmnCode': process.env.VNPAY_CODE,
             'vnp_TxnRef': crypto.randomUUID().toString(),
             'vnp_Version': '2.1.0',

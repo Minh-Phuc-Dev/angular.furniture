@@ -23,20 +23,20 @@
                 <h2 class="w-40">Tổng cộng</h2>
             </li>
             <li *ngFor="let item of cart" class="p-2 border rounded overflow-hidden flex items-center gap-x-5 justify-between">
-                <img class="block w-20 h-20 rounded" [src]="item.attributes.image[0]" [alt]="item.name">
+                <img class="block w-20 h-20 rounded" [src]="getImageUrl(item.product.attributes.image[0])" [alt]="item.product.name">
                 <div class="grow">
-                    <p>{{item.name}}</p>
+                    <p>{{item.product.name}}</p>
                     <p>#{{item.id}}</p>
                 </div>
                 <p class="w-20">
-                    <span class="font-medium text-primary">{{item.price}}$ </span>
-                    <span class="text-xs font-medium opacity-50 underline"> {{item.price}}$</span>
+                    <span class="font-medium text-primary">{{item.product.price}}$ </span>
+                    <span class="text-xs font-medium opacity-50 underline"> {{item.product.price}}$</span>
                 </p>
 
                 <div class="w-40 flex gap-x-2">
                     <button
                         class="px-2 bg-green-500 rounded text-white"
-                        (click)="addToCart(item.id)"
+                        (click)="addToCart(item.product.id)"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                             <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
@@ -45,14 +45,14 @@
                     <p class="w-10 text-center font-medium text-gray-500">{{item.quantity}}</p>
                     <button
                         class="px-2 bg-red-500 rounded text-white"
-                        (click)="removeFromCart(item.id)"
+                        (click)="removeFromCart(item.product.id)"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                             <path fill-rule="evenodd" d="M4 10a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H4.75A.75.75 0 0 1 4 10Z" clip-rule="evenodd" />
                         </svg>
                     </button>
                 </div>
-                <p class="w-40 font-medium text-gray-500">{{item.quantity * item.price}}</p>
+                <p class="w-40 font-medium text-gray-500">{{item.quantity * item.product.price}}</p>
 
             </li>
         </ul>
@@ -62,14 +62,47 @@
             <ul class="px-5 py-2 space-y-3">
                 <li *ngFor="let item of cart" class="flex gap-x-5 items-center">
                     <div class="grow truncate">
-                        <p class="font-medium">{{item.name}}</p>
-                        <p class="text-xs">{{item.price}}$ x {{item.quantity}}</p>
+                        <p class="font-medium">{{item.product.name}}</p>
+                        <p class="text-xs">{{item.product.price}}$ x {{item.quantity}}</p>
                     </div>
-                    <p class="font-medium text-gray-500">{{item.quantity * item.price}}$</p>
+                    <p class="font-medium text-gray-500">{{item.quantity * item.product.price}}$</p>
                 </li>
             </ul>
             <hr/>
             <form class="p-5 space-y-2" [formGroup]="form">
+                <div>
+                    <label class="text-gray-600 mb-2 block">
+                        <span>Người nhận hàng</span>
+                        <span class="text-primary"> *</span>
+                    </label>
+                    <div class="space-y-2">
+                        <div
+                            [attr.aria-invalid]="form.get('fullName')?.invalid && form.get('fullName')?.touched"
+                            class="flex items-center rounded border-2 focus-within:border-primary aria-invalid:focus-within:border-gemini-error aria-invalid:border-gemini-error transition-colors duration-200"
+                        >
+                            <input
+                                formControlName="fullName"
+                                [attr.aria-invalid]="form.get('fullName')?.invalid && form.get('fullName')?.touched"
+                                class="w-full outline-none border border-transparent rounded-sm px-2 py-1 transition-colors duration-200"
+                            />
+                        </div>
+                        <div
+                            *ngIf="form.get('fullName')?.invalid && form.get('fullName')?.touched"
+                            class="text-xs text-red-500 flex items-center space-x-1"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-4 h-4">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                                />
+                            </svg>
+                            <span>Vui lớng nhập người nhận hàng!</span>
+
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label class="text-gray-600 mb-2 block">
                         <span>Địa chỉ</span>
@@ -185,7 +218,7 @@
             <button
                 *ngIf="form.value.method === 'VNPAY'"
                 [disabled]="form.invalid"
-                (click)="generateUrl()"
+                (click)="submitForm()"
                 class="block w-full text-center bg-primary text-white py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Checkout: {{getTotalPrice()}}$

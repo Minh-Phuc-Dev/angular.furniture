@@ -38,19 +38,38 @@
                 </div>
                 <ul
                     *ngIf="order.length > 0"
-                    class="p-5 space-y-5"
+                    class="p-2 space-y-5"
                 >
-                    <li *ngFor="let item of order" class="flex items-start gap-x-5 justify-between">
-                        <div class="grow flex flex-col h-full overflow-hidden">
-                            <p class="text-gray-700 truncate">{{item.address}}</p>
-                            <p class="text-gray-700 truncate">{{item.phone}}</p>
+                    <li *ngFor="let item of order" class="p-3 border">
+                        <div class="flex items-start gap-x-5 justify-between">
+                            <div class="grow flex flex-col h-full overflow-hidden">
+                                <p class="text-gray-700 truncate">{{item.attributes.streetAddress}}</p>
+                                <p class="text-gray-700 truncate">{{item.attributes.phoneNumber}}</p>
+                                <p class="text-gray-700 truncate">
+                                    <span class="opacity-50">Status: </span>
+                                    <span *ngIf="item.status === 'PENDING'" class="text-primary font-medium capitalize'">Pending</span>
+                                    <span *ngIf="item.status === 'CANCELED'" class="text-red-500 font-medium capitalize'">Cancel</span>
+                                    <span *ngIf="item.status === 'PROCESSING'" class="text-secondary font-medium capitalize'">Processing</span>
+                                    <span *ngIf="item.status === 'COMPLETED'" class="text-green-500 font-medium capitalize'">Completed</span>
+
+                                </p>
+                            </div>
+
+                            <div class="w-max flex-none flex flex-col h-full space-y-1">
+                                <p class="text-xs font-medium bg-green-500 text-white rounded w-fit px-1" *ngIf="item.meta.paymentMethod === 'COD'">COD</p>
+                                <p class="text-xs font-medium bg-blue-500 text-white rounded w-fit px-1" *ngIf="item.meta.paymentMethod === 'VNPAY'">VNPAY</p>
+                                <p class="text-primary font-medium">{{item.totalAmount}}$</p>
+                            </div>
                         </div>
 
-                        <div class="w-max flex-none flex flex-col h-full space-y-1">
-                            <p class="text-xs font-medium bg-green-500 text-white rounded w-fit px-1" *ngIf="item.method === 'COD'">COD</p>
-                            <p class="text-xs font-medium bg-blue-500 text-white rounded w-fit px-1" *ngIf="item.method === 'VNPAY'">VNPAY</p>
-                            <p class="text-primary font-medium">{{item.total}}$</p>
-                        </div>
+
+                        <button
+                            class="ml-auto block bg-red-500 px-2 py-1 rounded text-white"
+                            *ngIf="item.status === 'PENDING'"
+                            (click)="cancelOrder(item.id)"
+                        >
+                            Cancel
+                        </button>
 
                     </li>
                 </ul>
@@ -98,11 +117,11 @@
                     class="p-5 space-y-5"
                 >
                     <li *ngFor="let item of cart" class="flex gap-x-5 justify-between">
-                        <img class="block w-12 h-12" [src]="item.attributes.image[0]" [alt]="item.name">
+                        <img class="block w-12 h-12" [src]="getImageUrl(item.product.attributes.image[0])" [alt]="item.product.name">
                         <div class="grow flex flex-col h-full space-y-2">
-                            <p>{{item.name}}</p>
+                            <p>{{item.product.name}}</p>
                             <p class="flex justify-between space-x-0.5">
-                                <span class="text-xs font-medium text-primary">{{item.price}}$</span>
+                                <span class="text-xs font-medium text-primary">{{item.product.price}}$</span>
                                 <span class="text-xs font-medium text-gray-500">Quantity: ({{item.quantity}})</span>
                             </p>
                         </div>

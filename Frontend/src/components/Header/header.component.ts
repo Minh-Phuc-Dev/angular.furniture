@@ -1,10 +1,14 @@
 import {NgForOf, NgIf} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
-import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
+import interceptor from 'apis/Interceptor';
 import {NavigationComponent} from 'components/Header/header.navigation.component';
-import {Order, ProductCart} from 'data';
+import {getImageUrl, requestApiHelper} from 'helpers';
 import {SharedStateService} from 'services/shared.service';
+import {Cart} from 'types/Cart';
+import {Order} from 'types/Order';
+import {Product} from 'types/Product';
 
 @Component({
     selector: 'app-header',
@@ -21,7 +25,7 @@ import {SharedStateService} from 'services/shared.service';
 
 export class HeaderComponent implements OnInit {
     protected isLoggedIn: boolean = false
-    protected cart: ProductCart[]= []
+    protected cart: Cart<Product>[]= []
     protected order: Order[] = []
 
     constructor(private router: Router, private sharedStateService: SharedStateService) {
@@ -29,15 +33,14 @@ export class HeaderComponent implements OnInit {
             login => this.isLoggedIn = login
         )
         this.sharedStateService.getCart().subscribe(
-            cart => {
-                this.cart = cart
-            }
+            cart => this.cart = cart
+
         )
         this.sharedStateService.getOrder().subscribe(
-            order => {
-                this.order = order
-            }
+            orders => this.order = orders
         )
+        this.sharedStateService.loadCart();
+        this.sharedStateService.loadOrder();
     }
     searchForm: FormGroup = new FormGroup(
         {
@@ -55,4 +58,18 @@ export class HeaderComponent implements OnInit {
         const searchValue = this.searchForm!.get('search')?.value;
         await this.router.navigate(['/search'], {queryParams: {search: searchValue}});
     }
+
+    async cancelOrder(orderId: number) {
+        await requestApiHelper(
+            interceptor.patch(
+                "orders/status",
+                {
+                    id: orderId,
+                    status: "CANCELED"
+                }
+            )
+        )
+        await this.sharedStateService.loadOrder();
+    }
+    getImageUrl = getImageUrl
 }

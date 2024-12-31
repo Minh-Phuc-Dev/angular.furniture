@@ -15,41 +15,5 @@ import {SharedStateService} from 'services/shared.service';
 })
 
 export class CompletePayment {
-    protected isSuccess: boolean = false
 
-    constructor(private sharedStateService: SharedStateService) {
-        this.sharedStateService.getOrder().subscribe(
-            orders => {
-                localStorage.setItem("orders", JSON.stringify(orders))
-            }
-        )
-
-        const order = this.saveOrder()
-        if (order?.method === "COD") {
-            this.isSuccess = true
-            return;
-        }
-        this.saveOrderVNPay(order!)
-    }
-
-    private saveOrder() {
-        if(!localStorage.getItem("order")){
-            return
-        }
-        const order = JSON.parse(localStorage.getItem("order")!)
-        this.sharedStateService.addOrder(order)
-        localStorage.removeItem("order")
-        localStorage.removeItem("cart")
-        this.sharedStateService.clearCart()
-        return order as Order
-    }
-
-    private saveOrderVNPay(order: Order) {
-        const params = new URLSearchParams(location.search);
-        const payload = {
-            orderId: params.get("vnp_TxnRef"),
-            responseCode: params.get("vnp_ResponseCode"),
-        }
-        this.isSuccess = order.id === payload.orderId && payload.responseCode === "00"
-    }
 }

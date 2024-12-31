@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Order, ProductCart, PRODUCTS} from 'data';
+import interceptor from 'apis/Interceptor';
+import { requestApiHelper } from 'helpers';
+
 import {BehaviorSubject} from 'rxjs';
+import { Cart } from 'types/Cart';
+import { Order } from 'types/Order';
+import {Product} from 'types/Product';
 
 @Injectable({
     providedIn: 'root'
@@ -8,19 +13,30 @@ import {BehaviorSubject} from 'rxjs';
 
 export class SharedStateService  {
     private loginStatus = new BehaviorSubject<boolean>(localStorage.getItem('isLoggedIn') === 'true');
-    private cart = new BehaviorSubject<ProductCart[]>(this.getInitialCart())
-    private order = new BehaviorSubject<Order[]>(this.getInitialOrder())
+    private cart = new BehaviorSubject<Cart<Product>[]>([])
+    private order = new BehaviorSubject<Order[]>([])
 
 
-    private getInitialCart(): ProductCart[] {
-        const storedCart = localStorage.getItem('cart');
-        return storedCart ? JSON.parse(storedCart) : [];
+    async loadCart(): Promise<Cart[]> {
+        const {success, payload} = await requestApiHelper<Cart<Product>[]>(
+            interceptor.get('cart')
+        )
+
+        this.cart.next(success ? payload! : [])
+
+        return success ? payload! : []
     }
 
-    private getInitialOrder(): Order[] {
-        const storedOrder = localStorage.getItem('orders');
-        return storedOrder ? JSON.parse(storedOrder) : [];
+    async loadOrder(): Promise<Order[]> {
+        const {success, payload} = await requestApiHelper<Order[]>(
+            interceptor.get('orders')
+        )
+
+        this.order.next(success ? payload! : [])
+
+        return success ? payload! : []
     }
+
 
     constructor() {
         this.cart.subscribe(cart => {
@@ -44,63 +60,24 @@ export class SharedStateService  {
         return this.cart.asObservable();
     }
 
-    addToCart(productId: number) {
-        const cart = [...this.cart.value]
-        const existingProduct = cart.findIndex(item => item.id === productId);
 
-        if (existingProduct !== -1) {
-            cart.splice(
-                existingProduct,
-                1,
-                {
-                    ...cart[existingProduct],
-                    quantity: cart[existingProduct].quantity + 1
-                }
-            );
-            this.cart.next(cart);
-            return
-        }
-
-        const product = PRODUCTS.find(
-            item => item.id === productId
+    async addToCart(productId: number) {
+        const {success} = await requestApiHelper<Cart>(
+            interceptor.post('cart', {productId, quantity: 1})
         )
-
-        if (product) {
-            cart.push(
-                {
-                    ...product,
-                    quantity: 1
-                }
-            )
-            this.cart.next(cart);
+        if(success) {
+            this.loadCart();
         }
+
     }
 
-    removeFromCart(productId: number) {
-        const cart = [...this.cart.value]
-        const existingProduct = cart.findIndex(item => item.id === productId);
-
-        if (existingProduct === -1) {
-            return;
-
+    async removeFromCart(productId: number) {
+        const {success} = await requestApiHelper<Cart>(
+            interceptor.delete('cart', {data: {productId, quantity: 1}})
+        )
+        if(success) {
+            this.loadCart();
         }
-
-        if(cart[existingProduct].quantity <= 1) {
-            cart.splice(existingProduct, 1);
-            this.cart.next(cart);
-            return
-        }
-
-        cart.splice(
-            existingProduct,
-            1,
-            {
-                ...cart[existingProduct],
-                quantity: cart[existingProduct].quantity - 1
-            }
-        );
-
-        this.cart.next(cart);
     }
 
     clearCart() {
